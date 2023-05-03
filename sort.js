@@ -15,6 +15,7 @@ let isStopped = false
 
 
 
+
 const generateRandomNum = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -38,10 +39,10 @@ const setInterface = (val) => { // Val must be boolean!!!
     shuffle_btn.disabled = !val
     start_btn.disabled = !val
     method_select.disabled = !val
+    mode_select.disabled = !val
 }
 
 const renderBars = (array) => {
-    /* When bars are rendered, in the main case: width = numberofbars/10; margin = 0 numberofbars/50 */
     for (let i = 0; i < array.length; i++) {
         let bar = document.createElement("div")
         bar.classList.add("bar")
@@ -49,21 +50,56 @@ const renderBars = (array) => {
         bar.style.width = 1500 / numOfBars + 'px'
         bar.style.marginLeft = 150 / numOfBars + 'px'
         bar.style.marginRight = 150 / numOfBars + 'px'
-
         bars_container.appendChild(bar)
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Set up (Bar width,etc...)
-    createRandomArray()
-    renderBars(unsortedArray)
-})
-
-shuffle_btn.addEventListener('click', () => {
+const drawBars = () => {
     createRandomArray()
     bars_container.innerHTML = ""
     renderBars(unsortedArray)
+}
+const stopProcess = () => {
+    if (isStopped) {
+        setInterface(true)
+        isStopped = false
+        return true
+    }
+    return false
+}
+
+const resetHighlights = (bars, k, selected1, selected2) => {
+    if (k !== selected1 && k !== selected2) {
+        bars[k].style.backgroundColor = '#FEE715FF'
+    }
+}
+
+const swapElements = (arr, index1, index2) => {
+    if (arr[index1] < arr[index2]) {
+        let tmp = arr[index1]
+        arr[index1] = arr[index2]
+        arr[index2] = tmp
+    }
+}
+const highlightElement = (bars, arr, index) => {
+    bars[index].style.height = arr[index] * barHeightMultiplier + "px"
+    bars[index].style.backgroundColor = "aqua"
+}
+const checkIfListIsSorted = (list) => {
+    for (let i = 0; i < list.length - 1; i++) {
+        if (list[i] > list[i + 1]) return false
+    }
+    alert('List Is Already sorted!')
+    setInterface(true)
+    return true
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    drawBars()
+})
+
+shuffle_btn.addEventListener('click', () => {
+    drawBars()
 })
 start_btn.addEventListener('click', () => {
     switch (method_select.value) {
@@ -82,35 +118,22 @@ stop_btn.addEventListener('click', () => {
 mode_select.addEventListener('change', () => {
     numOfBars = mode_select.value.split(',')[0]
     speed = mode_select.value.split(',')[1]
-    createRandomArray()
-    bars_container.innerHTML = ""
-    renderBars(unsortedArray)
+    drawBars()
 })
 
 const bubbleSort = async (arr) => {
+    if (checkIfListIsSorted(arr)) return arr
     let bars = document.getElementsByClassName('bar')
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - 1 - i; j++) {
-            if (isStopped) {
-                setInterface(true)
-                isStopped = false
-                return arr
+            if (stopProcess()) return arr
+            for (let k = 0; k < bars.length; k++) {
+                resetHighlights(bars, k, j + 1, j)
             }
-            if (arr[j] > arr[j + 1]) {
-                for (let k = 0; k < bars.length; k++) {
-                    if (k !== j && k !== j + 1) {
-                        bars[k].style.backgroundColor = '#FEE715FF'
-                    }
-                }
-                let tmp = arr[j]
-                arr[j] = arr[j + 1]
-                arr[j + 1] = tmp
-                bars[j].style.height = arr[j] * barHeightMultiplier + "px"
-                bars[j].style.backgroundColor = "aqua"
-                bars[j + 1].style.height = arr[j + 1] * barHeightMultiplier + "px"
-                bars[j + 1].style.backgroundColor = "aqua"
-                await delay(speed)
-            }
+            swapElements(arr, j + 1, j)
+            highlightElement(bars, arr, j)
+            highlightElement(bars, arr, j + 1)
+            if (speed !== 0) await delay(speed)
         }
     }
     setInterface(true)
@@ -118,30 +141,18 @@ const bubbleSort = async (arr) => {
 }
 
 const selectionSort = async (arr) => {
+    if (checkIfListIsSorted(arr)) return arr
     let bars = document.getElementsByClassName('bar')
     for (let i = 0; i < arr.length; i++) {
         for (let j = i + 1; j < bars.length; j++) {
             for (let k = 0; k < bars.length; k++) {
-                if (k !== j && k !== i) {
-                    bars[k].style.backgroundColor = '#FEE715FF'
-                }
-                if (isStopped) {
-                    setInterface(true)
-                    isStopped = false
-                    return arr
-                }
-                bars[j].style.height = arr[j] * barHeightMultiplier + "px"
-                bars[j].style.backgroundColor = "aqua"
-                if (arr[j] < arr[i]) {
-
-                    tmp = arr[j]
-                    arr[j] = arr[i]
-                    arr[i] = tmp
-                    bars[i].style.height = arr[i] * barHeightMultiplier + "px"
-                    bars[i].style.backgroundColor = "aqua"
-                }
+                resetHighlights(bars, k, i, j)
+                if (stopProcess()) return arr
+                highlightElement(bars, arr, j)
+                highlightElement(bars, arr, i)
+                swapElements(arr, j, i)
             }
-            await delay(speed)
+            if (speed !== 0) await delay(speed)
         }
     }
     setInterface(true)
