@@ -98,10 +98,10 @@ const bubbleSort = async (arr) => {
                 bars[j].style.backgroundColor = "aqua"
                 bars[j +1].style.height = arr[j +1] * barHeightMultiplier + "px"
                 bars[j +1].style.backgroundColor = "aqua"
-                await delay((1000-speed))
+                await delay((500-speed))
             }
         }
-        await delay(1000-speed)
+        await delay(10-speed)
     }
     setInterface(true)
     return arr
@@ -131,7 +131,7 @@ const selectionSort = async (arr) => {
                 bars[i].style.backgroundColor = "aqua"
             }
             }
-            await delay((1000-speed))
+            await delay((500-speed))
         }
         await delay(10-speed)
     }
