@@ -115,10 +115,10 @@ stop_btn.addEventListener('click', () => {
     isStopped = true
     setInterface(true)
 })
-mode_select.addEventListener('change', () => {
+mode_select.addEventListener('change', (event) => {
     numOfBars = mode_select.value.split(',')[0]
     speed = mode_select.value.split(',')[1]
-    drawBars()
+    if (numOfBars != unsortedArray.length) drawBars()
 })
 
 const bubbleSort = async (arr) => {
@@ -133,7 +133,7 @@ const bubbleSort = async (arr) => {
             swapElements(arr, j + 1, j)
             highlightElement(bars, arr, j)
             highlightElement(bars, arr, j + 1)
-            if (speed !== 0) await delay(speed)
+            await delay(speed)
         }
     }
     setInterface(true)
@@ -152,7 +152,7 @@ const selectionSort = async (arr) => {
                 highlightElement(bars, arr, i)
                 swapElements(arr, j, i)
             }
-            if (speed !== 0) await delay(speed)
+            await delay(speed)
         }
     }
     setInterface(true)
