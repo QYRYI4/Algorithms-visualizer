@@ -3,6 +3,7 @@ const start_btn = document.getElementById('start_btn')
 const stop_btn = document.getElementById('stop_btn')
 const speed_range = document.getElementById('speed_range')
 const bars_container = document.getElementById('bars_container')
+const method_select = document.getElementById('method_select')
 const barHeightMultiplier = 8.5
 const MINRANGE = 1
 const MAXRANGE = 80
@@ -32,6 +33,7 @@ const createRandomArray = () => {
 const setInterface = (val) => { // Val must be boolean!!!
     shuffle_btn.disabled = !val
     start_btn.disabled = !val
+    method_select.disabled = !val
 }
 
 const renderBars = (array) => {
@@ -44,6 +46,7 @@ const renderBars = (array) => {
 }
 
 document.addEventListener('DOMContentLoaded',() => {
+    // Set up (Bar width,etc...)
     createRandomArray()
     renderBars(unsortedArray)
 })
@@ -54,7 +57,14 @@ shuffle_btn.addEventListener('click', () => {
     renderBars(unsortedArray)
 })
 start_btn.addEventListener('click',() => {
-    bubbleSort(unsortedArray)
+    //TODO! Update with switch!!!
+    switch (method_select.value) {
+        case 'bubblesort':
+            bubbleSort(unsortedArray)
+            break;
+        case 'selectionsort':
+            selectionSort(unsortedArray)
+    }
     setInterface(false)
 })
 stop_btn.addEventListener('click', () => {
@@ -88,11 +98,43 @@ const bubbleSort = async (arr) => {
                 bars[j].style.backgroundColor = "aqua"
                 bars[j +1].style.height = arr[j +1] * barHeightMultiplier + "px"
                 bars[j +1].style.backgroundColor = "aqua"
-                await delay((100-speed)*5)
+                await delay((1000-speed))
             }
         }
-        await delay(100-speed)
+        await delay(1000-speed)
     }
     setInterface(true)
     return arr
 } 
+
+const selectionSort = async (arr) => {
+    let bars = document.getElementsByClassName('bar')
+    for(let i = 0; i < arr.length; i++){
+        for(let j = i + 1; j < bars.length;j++){
+            for(let k = 0; k < bars.length;k++){
+                if(k!== j &&k !== i){
+                    bars[k].style.backgroundColor = '#FEE715FF'
+                }
+            if(isStopped) {
+                setInterface(true)
+                isStopped = false
+                return arr
+            }
+            bars[j].style.height = arr[j] * barHeightMultiplier + "px"
+            bars[j].style.backgroundColor = "aqua"
+            if(arr[j] < arr[i]) {
+                
+                tmp = arr[j]
+                arr[j] = arr[i]
+                arr[i] = tmp
+                bars[i].style.height = arr[i] * barHeightMultiplier + "px"
+                bars[i].style.backgroundColor = "aqua"
+            }
+            }
+            await delay((1000-speed))
+        }
+        await delay(10-speed)
+    }
+    setInterface(true)
+    return arr
+}

@@ -29,7 +29,7 @@
 body {
     background-color: #101820FF;
 }
-.buttons_container > button {
+.buttons_container > button, select {
     width: 200px;
     height: 30px;
     background-color: #677685;
@@ -39,7 +39,19 @@ body {
     font-size: 14px;
     transition: 0.02s ease-in-out;
     margin-top: 20px;
+    text-align: center;
 }
+
+select:enabled:hover{
+    cursor: pointer;
+}
+select:disabled{
+    border: 2px solid #566975;
+    background-color: #101820FF;
+}
+select::-ms-expand {
+    display: none;
+  }
 button:disabled{
     border: 2px solid #566975;
     background-color: #101820FF;

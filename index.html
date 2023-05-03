@@ -10,13 +10,18 @@
   <body>
     <div class="container">
       <div class="buttons_container">
-        <button id="shuffle">Shuffle</button>
+        Method:
+        <select id="method_select">
+          <option value="bubblesort">Bubble sort</option>
+          <option value="selectionsort">Selection sort</option>
+        </select>
       </div>
       <div class="buttons_container">
         Speed:
-        <input type="range" id="speed_range" min=0 max=100 step=10 >
+        <input type="range" id="speed_range" min=0 max=1000 step=10 >
       </div>
       <div class="buttons_container">
+        <button id="shuffle">Shuffle</button>
         <button id="start_btn">Start</button>
         <button id="stop_btn">Stop</button>
       </div>
