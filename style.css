@@ -20,9 +20,7 @@
     margin-top: 50px;
 }
 .bar{
-    width: 10px;
     border: 1px solid black;
-    margin: 0 2px;
     transition: height 0.5s ease-in-out;
     background-color: #FEE715FF;
 }
