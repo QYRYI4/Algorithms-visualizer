@@ -81,9 +81,9 @@ const swapElements = (arr, index1, index2) => {
         arr[index2] = tmp
     }
 }
-const highlightElement = (bars, arr, index) => {
+const highlightElement = (bars, arr, index, color) => {
     bars[index].style.height = arr[index] * barHeightMultiplier + "px"
-    bars[index].style.backgroundColor = "aqua"
+    bars[index].style.backgroundColor = color
 }
 const checkIfListIsSorted = (list) => {
     for (let i = 0; i < list.length - 1; i++) {
@@ -131,8 +131,8 @@ const bubbleSort = async (arr) => {
                 resetHighlights(bars, k, j + 1, j)
             }
             swapElements(arr, j + 1, j)
-            highlightElement(bars, arr, j)
-            highlightElement(bars, arr, j + 1)
+            highlightElement(bars, arr, j,'aqua')
+            highlightElement(bars, arr, j + 1,'aqua')
             await delay(speed)
         }
     }
@@ -148,8 +148,8 @@ const selectionSort = async (arr) => {
             for (let k = 0; k < bars.length; k++) {
                 resetHighlights(bars, k, i, j)
                 if (stopProcess()) return arr
-                highlightElement(bars, arr, j)
-                highlightElement(bars, arr, i)
+                highlightElement(bars, arr, j,'aqua')
+                highlightElement(bars, arr, i,'aqua')
                 swapElements(arr, j, i)
             }
             await delay(speed)
