@@ -112,8 +112,8 @@ start_btn.addEventListener('click', () => {
         case 'insertionsort':
             insertionSort(unsortedArray)
             break;
-            setInterface(false)
     }
+    setInterface(false)
 })
 stop_btn.addEventListener('click', () => {
     isStopped = true
