@@ -183,11 +183,11 @@ const selectionSort = async () => {
     if (checkIfListIsSorted()) return unsortedArray
     for (let i = 0; i < unsortedArray.length; i++) {
         for (let j = i + 1; j < unsortedArray.length; j++) {
+            swapElements(j, i)
             for (let k = 0; k < unsortedArray.length; k++) {
-                resetHighlights(k, i, j)
                 if (k < i) highlightElement(k, 'green')
                 if (stopProcess()) return unsortedArray
-                swapElements(j, i)
+                resetHighlights(k, i, j)
             }
             await delay(speed)
         }
