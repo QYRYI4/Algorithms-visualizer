@@ -21,13 +21,12 @@
         <span>Mode:</span>
         <select id="mode_select">
           <option value="30,1000">30Bars | Very Slow</option>
-          <option value="30,400">30Bars | Slow</option>
           <option value="30,10">30Bars | Fast</option>
+          <option value="100,1">100Bars | Fast</option>
           <option value="500,1">500Bars | Fast</option>
         </select>
       </div>
-      <div class="buttons_container">
-      </div>
+      <div class="buttons_container"></div>
       <div class="buttons_container">
         <button id="shuffle">Shuffle</button>
         <button id="start_btn">Start</button>
@@ -35,6 +34,13 @@
       </div>
       <div class="bars_container" id="bars_container">
         <!--The JS code will generate the bars here.-->
+      </div>
+      <div class="legend">
+        <div class="legend_title">Meaning of the colors</div>
+        <span class="yellow_box">Unsorted</span>
+        <span class="red_box">Selected, must be swapped</span>
+        <span class="aqua_box">Selected, must not be swapped</span>
+        <span class="green_box">Sorted</span>
       </div>
     </div>
     <script src="sort.js"></script>

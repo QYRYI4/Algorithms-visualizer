@@ -17,12 +17,14 @@
 .bars_container{
     display: flex;
     flex-direction: row;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .bar{
     border: 1px solid black;
     transition: height 0.5s ease-in-out;
     background-color: #FEE715FF;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
 }
 body {
     background-color: #101820FF;
@@ -36,7 +38,7 @@ body {
     color:wheat;
     font-size: 14px;
     transition: 0.02s ease-in-out;
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -63,3 +65,26 @@ button:enabled:hover{
     background-color: #566975;
     cursor:pointer;
 }
+
+.legend{
+    width: 100%;
+    border-top: #677685 2px solid;
+    padding-top: 1rem;
+    position: fixed;
+    bottom: 1rem;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.legend > span{
+    display: inline-flex;
+    flex-direction: column;
+    margin: 0.5rem 2rem 0.5rem 2rem;
+    padding: 0.5rem;
+    color: black;
+    font-weight: bolder;
+}
+.yellow_box{background-color: yellow;}
+.red_box{background-color: red;}
+.aqua_box{background-color: aqua;}
+.green_box{background-color: green;}

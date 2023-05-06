@@ -12,6 +12,7 @@ let numOfBars = mode_select.value.split(',')[0]
 let speed = mode_select.value.split(',')[1]
 let unsortedArray = new Array(numOfBars)
 let isStopped = false
+let bars = document.getElementsByClassName('bar')
 
 
 
@@ -68,7 +69,7 @@ const stopProcess = () => {
     return false
 }
 
-const resetHighlights = (bars, k, selected1, selected2) => {
+const resetHighlights = (k, selected1, selected2) => {
     if (k !== selected1 && k !== selected2) {
         bars[k].style.backgroundColor = '#FEE715FF'
     }
@@ -79,9 +80,15 @@ const swapElements = (arr, index1, index2) => {
         let tmp = arr[index1]
         arr[index1] = arr[index2]
         arr[index2] = tmp
+        highlightElement(arr, index1, 'red')
+        highlightElement(arr, index2, 'red')
+    }
+    else {
+        highlightElement(arr, index1, 'aqua')
+        highlightElement(arr, index2, 'aqua')
     }
 }
-const highlightElement = (bars, arr, index, color) => {
+const highlightElement = (arr, index, color) => {
     bars[index].style.height = arr[index] * barHeightMultiplier + "px"
     bars[index].style.backgroundColor = color
 }
@@ -90,7 +97,6 @@ const checkIfListIsSorted = (list) => {
         if (list[i] > list[i + 1]) return false
     }
     alert('List Is Already sorted!')
-    setInterface(true)
     return true
 }
 
@@ -102,6 +108,7 @@ shuffle_btn.addEventListener('click', () => {
     drawBars()
 })
 start_btn.addEventListener('click', () => {
+    if (checkIfListIsSorted(unsortedArray)) return
     switch (method_select.value) {
         case 'bubblesort':
             bubbleSort(unsortedArray)
@@ -119,7 +126,7 @@ stop_btn.addEventListener('click', () => {
     isStopped = true
     setInterface(true)
 })
-mode_select.addEventListener('change', (event) => {
+mode_select.addEventListener('change', () => {
     numOfBars = mode_select.value.split(',')[0]
     speed = mode_select.value.split(',')[1]
     if (numOfBars != unsortedArray.length) drawBars()
@@ -127,66 +134,58 @@ mode_select.addEventListener('change', (event) => {
 
 const bubbleSort = async (arr) => {
     if (checkIfListIsSorted(arr)) return arr
-    let bars = document.getElementsByClassName('bar')
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - 1 - i; j++) {
             if (stopProcess()) return arr
-            for (let k = 0; k < bars.length; k++) {
-                resetHighlights(bars, k, j + 1, j)
-                if (k > arr.length - i - 1) highlightElement(bars, arr, k, 'green')
+            for (let k = 0; k < arr.length; k++) {
+                resetHighlights(k, j + 1, j)
+                if (k > arr.length - i - 1) highlightElement(arr, k, 'green')
             }
             swapElements(arr, j + 1, j)
-            highlightElement(bars, arr, j, 'aqua')
-            highlightElement(bars, arr, j + 1, 'aqua')
             await delay(speed)
         }
     }
     setInterface(true)
+    start_btn.disabled = true
+    stop_btn.disabled = true
     return arr
 }
 
 const selectionSort = async (arr) => {
     if (checkIfListIsSorted(arr)) return arr
-    let bars = document.getElementsByClassName('bar')
     for (let i = 0; i < arr.length; i++) {
         for (let j = i + 1; j < arr.length; j++) {
             for (let k = 0; k < arr.length; k++) {
-                resetHighlights(bars, k, i, j)
-                if (k < i) highlightElement(bars, arr, k, 'green')
+                resetHighlights(k, i, j)
+                if (k < i) highlightElement(arr, k, 'green')
                 if (stopProcess()) return arr
-                highlightElement(bars, arr, j, 'aqua')
-                highlightElement(bars, arr, i, 'aqua')
                 swapElements(arr, j, i)
             }
             await delay(speed)
         }
     }
     setInterface(true)
+    start_btn.disabled = true
+    stop_btn.disabled = true
     return arr
 }
 
 const insertionSort = async (arr) => {
     if (checkIfListIsSorted(arr)) return arr
-    let bars = document.getElementsByClassName('bar')
-
     for (let i = 1; i < arr.length; i++) {
-        for (let j = 0; j < i+1; j++) {
+        for (let j = 0; j < i + 1; j++) {
             if (stopProcess()) return arr
-            for (let k = 0; k < bars.length; k++) {
-                resetHighlights(bars, k, j + 1, j)
-                if (k < i+1) highlightElement(bars, arr, k, 'green')
+            for (let k = 0; k < arr.length; k++) {
+                resetHighlights(k, j + 1, j)
+                if (k < i + 1) highlightElement(arr, k, 'green')
             }
-            highlightElement(bars, arr, j, 'aqua')
-            highlightElement(bars, arr, i, 'aqua')
-            if (arr[j] > arr[i]) {
-                highlightElement(bars, arr, j, 'red')
-                highlightElement(bars, arr, i, 'red')
-                swapElements(arr, i,j)
-            }
+            swapElements(arr, i, j)
             await delay(speed)
         }
     }
 
     setInterface(true)
+    start_btn.disabled = true
+    stop_btn.disabled = true
     return arr
 }
