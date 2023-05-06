@@ -108,8 +108,12 @@ start_btn.addEventListener('click', () => {
             break;
         case 'selectionsort':
             selectionSort(unsortedArray)
+            break;
+        case 'insertionsort':
+            insertionSort(unsortedArray)
+            break;
+            setInterface(false)
     }
-    setInterface(false)
 })
 stop_btn.addEventListener('click', () => {
     isStopped = true
@@ -129,10 +133,11 @@ const bubbleSort = async (arr) => {
             if (stopProcess()) return arr
             for (let k = 0; k < bars.length; k++) {
                 resetHighlights(bars, k, j + 1, j)
+                if (k > arr.length - i - 1) highlightElement(bars, arr, k, 'green')
             }
             swapElements(arr, j + 1, j)
-            highlightElement(bars, arr, j,'aqua')
-            highlightElement(bars, arr, j + 1,'aqua')
+            highlightElement(bars, arr, j, 'aqua')
+            highlightElement(bars, arr, j + 1, 'aqua')
             await delay(speed)
         }
     }
@@ -144,17 +149,44 @@ const selectionSort = async (arr) => {
     if (checkIfListIsSorted(arr)) return arr
     let bars = document.getElementsByClassName('bar')
     for (let i = 0; i < arr.length; i++) {
-        for (let j = i + 1; j < bars.length; j++) {
-            for (let k = 0; k < bars.length; k++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            for (let k = 0; k < arr.length; k++) {
                 resetHighlights(bars, k, i, j)
+                if (k < i) highlightElement(bars, arr, k, 'green')
                 if (stopProcess()) return arr
-                highlightElement(bars, arr, j,'aqua')
-                highlightElement(bars, arr, i,'aqua')
+                highlightElement(bars, arr, j, 'aqua')
+                highlightElement(bars, arr, i, 'aqua')
                 swapElements(arr, j, i)
             }
             await delay(speed)
         }
     }
+    setInterface(true)
+    return arr
+}
+
+const insertionSort = async (arr) => {
+    if (checkIfListIsSorted(arr)) return arr
+    let bars = document.getElementsByClassName('bar')
+
+    for (let i = 1; i < arr.length; i++) {
+        for (let j = 0; j < i+1; j++) {
+            if (stopProcess()) return arr
+            for (let k = 0; k < bars.length; k++) {
+                resetHighlights(bars, k, j + 1, j)
+                if (k < i+1) highlightElement(bars, arr, k, 'green')
+            }
+            highlightElement(bars, arr, j, 'aqua')
+            highlightElement(bars, arr, i, 'aqua')
+            if (arr[j] > arr[i]) {
+                highlightElement(bars, arr, j, 'red')
+                highlightElement(bars, arr, i, 'red')
+                swapElements(arr, i,j)
+            }
+            await delay(speed)
+        }
+    }
+
     setInterface(true)
     return arr
 }
